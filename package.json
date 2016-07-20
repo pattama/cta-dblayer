@@ -1,0 +1,60 @@
+{
+  "name": "cta-dblayer",
+  "version": "0.0.1",
+  "description": "Database layer for Compass Test Automation",
+  "contributors": [
+    "Song An Bui <songan.bui@thomsonreuters.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/thomsonreuters/cta-dblayer.git"
+  },
+  "engines": {
+    "node": "4.2.2"
+  },
+  "dependencies": {
+    "bson": "^0.4.23",
+    "co": "~4.0.0",
+    "es6-promisify": "^3.0.0",
+    "mongodb": "^2.2.4",
+    "request": "~2.67.0",
+    "tree-kill": "1.0.0"
+  },
+  "bugs": {
+    "url": "https://github.com/thomsonreuters/cta-dblayer/issues"
+  },
+  "homepage": "https://github.com/thomsonreuters/cta-dblayer",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "babel-eslint": "^4.1.5",
+    "bson": "^0.4.23",
+    "chai": "^3.4.0",
+    "chai-as-promised": "^5.1.0",
+    "eslint": "^1.9.0",
+    "eslint-config-airbnb": "^1.0.0",
+    "eslint-plugin-react": "^3.9.0",
+    "istanbul": "^0.4.1",
+    "jsdoc": "^3.4.0",
+    "jsdoc-to-markdown": "^1.3.6",
+    "mocha": "^2.3.4",
+    "mock-require": "^1.3.0",
+    "nock": "^8.0.0",
+    "opener": "^1.4.0",
+    "proxyquire": "^1.7.9",
+    "require-subvert": "^0.1.0",
+    "sinon": "^1.17.0",
+    "sinon-as-promised": "^4.0.0"
+  },
+  "sourceDependencies": {
+    "cta-brick": "*"
+  },
+  "scripts": {
+    "test": "_mocha test",
+    "codecoverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec && opener ./coverage/lcov-report/index.html",
+    "docs": "jsdoc2md \"lib/**/*.js\" > DOCUMENTATION.md && jsdoc --readme README.md lib -r -d docs && opener ./docs/index.html"
+  },
+  "license": "Apache-2.0"
+}

@@ -102,4 +102,42 @@ describe('MongoDbLayer - init', function() {
       expect(initPromise).to.equal('ok');
     });
   });
+
+  context('when connecting to MongoDb fails', function() {
+    let mongoDbLayer;
+    const mockMongoClientConnectError = new Error('mock error connection');
+    let stubMongoClientConnect;
+    let url;
+    url = 'mongodb://';
+    url += DEFAULTCONFIG.servers.map((elem) => `${elem.host}:${elem.port}`).join(',');
+    url += `/${DEFAULTCONFIG.databasename}`;
+    before(function(done) {
+      // stubs the connect() method of the mongodb.MongoClient module
+      // the callback will be called with err=mockMongoClientConnectError and db=null
+      stubMongoClientConnect = sinon.stub().callsArgWith(2, mockMongoClientConnectError, null);
+
+      // subvert the native driver with the mocked method
+      requireSubvert.subvert('mongodb', {
+        'MongoClient': {
+          'connect': stubMongoClientConnect,
+        },
+      });
+
+      // reloads the native driver used in MongoDbLayer class by the subverted one
+      MongoDbLayer = requireSubvert.require('../../../../lib/providers/mongodb');
+
+      // creates a new instance of MongoDbLayer
+      mongoDbLayer = new MongoDbLayer(DEFAULTCONFIG, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+      done();
+    });
+
+    after(function() {
+      requireSubvert.cleanUp();
+    });
+
+    it('should reject with an error', function() {
+      const initPromise = mongoDbLayer.init();
+      return expect(initPromise).to.eventually.be.rejectedWith(mockMongoClientConnectError);
+    });
+  });
 });

@@ -37,13 +37,14 @@ const DEFAULTCONFIG = {
     },
   },
 };
+const DEFAULTLOGGER = logger();
 const DEFAULTCEMENTHELPER = {
   constructor: {
     name: 'CementHelper',
   },
   brickName: 'mongodblayer',
+  logger: DEFAULTLOGGER,
 };
-const DEFAULTLOGGER = logger();
 
 describe('MongoDbLayer - init', function() {
   context('when everything ok', function() {
@@ -76,7 +77,7 @@ describe('MongoDbLayer - init', function() {
         MongoDbLayer = requireSubvert.require('../../../../lib/providers/mongodb');
 
         // creates a new instance of MongoDbLayer
-        mongoDbLayer = new MongoDbLayer(DEFAULTCONFIG, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+        mongoDbLayer = new MongoDbLayer(DEFAULTCEMENTHELPER, DEFAULTCONFIG);
 
         // calls MongoDbLayer init() method
         mongoDbLayer.init().then(function(response) {
@@ -127,7 +128,7 @@ describe('MongoDbLayer - init', function() {
       MongoDbLayer = requireSubvert.require('../../../../lib/providers/mongodb');
 
       // creates a new instance of MongoDbLayer
-      mongoDbLayer = new MongoDbLayer(DEFAULTCONFIG, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+      mongoDbLayer = new MongoDbLayer(DEFAULTCEMENTHELPER, DEFAULTCONFIG);
       done();
     });
 

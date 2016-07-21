@@ -10,6 +10,7 @@ const mockrequire = require('mock-require');
 const _ = require('lodash');
 
 const DbLayer = require('../../lib/index');
+const logger = require('cta-logger');
 
 const DEFAULTS = {
   'name': 'dblayer',
@@ -23,6 +24,7 @@ const DEFAULTS = {
   'subscribe': [
   ],
 };
+const DEFAULTLOGGER = logger();
 
 describe('DbLayer - constructor', function() {
   const mockCementHelper = {
@@ -30,6 +32,7 @@ describe('DbLayer - constructor', function() {
       name: 'CementHelper',
     },
     brickName: 'dblayer',
+    logger: DEFAULTLOGGER,
   };
 
   context(`when missing/incorrect 'provider' string property in config.properties`, function() {
@@ -106,11 +109,11 @@ describe('DbLayer - constructor', function() {
     before(function() {
       // create a mock provider
       mockProviders.set(config.properties.provider, {
-        MockConstructor: function(opts, cementHelper, logger) {
+        MockConstructor: function(cementHelper, opts) {
           return {
             'ok': opts.ok,
             'cementHelper': cementHelper,
-            'logger': logger,
+            'logger': cementHelper.logger,
             'init': function() {},
             'validate': function() {},
             'process': function() {},
@@ -132,7 +135,7 @@ describe('DbLayer - constructor', function() {
       expect(dbLayer).to.have.property('instance');
       expect(dbLayer.instance).to.have.property('ok', dbLayer.configuration.ok);
       expect(dbLayer.instance).to.have.property('cementHelper', dbLayer.cementHelper);
-      expect(dbLayer.instance).to.have.property('logger', dbLayer.logger);
+      expect(dbLayer.instance).to.have.property('logger', dbLayer.cementHelper.logger);
       expect(dbLayer.init).to.equal(dbLayer.instance.init);
       expect(dbLayer.validate).to.equal(dbLayer.instance.validate);
       expect(dbLayer.process).to.equal(dbLayer.instance.process);

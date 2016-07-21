@@ -137,7 +137,6 @@ describe('DbLayer - constructor', function() {
       expect(dbLayer.instance).to.have.property('cementHelper', dbLayer.cementHelper);
       expect(dbLayer.instance).to.have.property('logger', dbLayer.cementHelper.logger);
       expect(dbLayer.init).to.equal(dbLayer.instance.init);
-      expect(dbLayer.validate).to.equal(dbLayer.instance.validate);
       expect(dbLayer.process).to.equal(dbLayer.instance.process);
       done();
     });

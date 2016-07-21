@@ -10,33 +10,7 @@ const requireSubvert = require('require-subvert')(__dirname);
 const mongodb = require('mongodb');
 let MongoDbLayer = require('../../../../lib/providers/mongodb');
 const logger = require('cta-logger');
-const DEFAULTCONFIG = {
-  databasename: 'etap',
-  servers: [
-    {
-      host: 'dtci-ctawbmd-01.emea1.cis.trcloud',
-      port: 27017,
-    },
-    {
-      host: 'dtci-ctawbmd-02.emea1.cis.trcloud',
-      port: 27017,
-    },
-    {
-      host: 'dtci-ctawbmd-03.emea1.cis.trcloud',
-      port: 27017,
-    },
-  ],
-  options: {
-    db: {
-      'w': 'majority',
-      'readPreference': 'primaryPreferred',
-    },
-    replSet: {
-      'replicaSet': 'etap',
-      'poolSize': 100,
-    },
-  },
-};
+const DEFAULTCONFIG = require('./index.config.testdata.js');
 const DEFAULTLOGGER = logger();
 const DEFAULTCEMENTHELPER = {
   constructor: {
@@ -64,7 +38,7 @@ describe('MongoDbLayer - init', function() {
 
         // stubs the connect() method of the mongodb.MongoClient module
         // the callback will be called with err=null and db=mockDbConnection
-        stubMongoClientConnect = sinon.stub().callsArgWith(2, null, mockDbConnection);
+        stubMongoClientConnect = sinon.stub().yields(null, mockDbConnection);
 
         // subvert the native driver with the mocked method
         requireSubvert.subvert('mongodb', {
@@ -108,14 +82,10 @@ describe('MongoDbLayer - init', function() {
     let mongoDbLayer;
     const mockMongoClientConnectError = new Error('mock error connection');
     let stubMongoClientConnect;
-    let url;
-    url = 'mongodb://';
-    url += DEFAULTCONFIG.servers.map((elem) => `${elem.host}:${elem.port}`).join(',');
-    url += `/${DEFAULTCONFIG.databasename}`;
     before(function(done) {
       // stubs the connect() method of the mongodb.MongoClient module
       // the callback will be called with err=mockMongoClientConnectError and db=null
-      stubMongoClientConnect = sinon.stub().callsArgWith(2, mockMongoClientConnectError, null);
+      stubMongoClientConnect = sinon.stub().yields(mockMongoClientConnectError, null);
 
       // subvert the native driver with the mocked method
       requireSubvert.subvert('mongodb', {

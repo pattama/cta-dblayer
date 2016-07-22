@@ -11,6 +11,7 @@ const _ = require('lodash');
 const mongodb = require('mongodb');
 let MongoDbLayer = require('../../../../lib/providers/mongodb');
 const logger = require('cta-logger');
+const Context = require('cta-flowcontrol').Context;
 const DEFAULTCONFIG = require('./index.config.testdata.js');
 const DEFAULTLOGGER = logger();
 const DEFAULTCEMENTHELPER = {
@@ -79,11 +80,10 @@ describe('MongoDbLayer - process', function() {
 
     context('when everything ok', function() {
       const job = _.cloneDeep(dbqueryjob);
-      const context = {data: job};
+      const context = new Context(DEFAULTCEMENTHELPER, job);
       let mockDbCollection;
       let stubDbCollection;
       const mockQueryResponse = {doc: 1};
-      let processPromise;
       before(function(done) {
         // mock a db collection object for context.payload.collection
         mockDbCollection = {};
@@ -92,11 +92,14 @@ describe('MongoDbLayer - process', function() {
         // stub db.collection() method
         stubDbCollection = sinon.stub(mockDbConnection, 'collection').withArgs(context.data.payload.collection).yields(null, mockDbCollection);
 
-        // calls MongoDbLayer process() method
-        mongoDbLayer.process(context).then(function(res) {
-          processPromise = res;
+        // spy context emit() method
+        sinon.spy(context, 'emit');
+        context.on('done', function() {
           done();
-        }).catch(done);
+        });
+
+        // calls MongoDbLayer process() method
+        mongoDbLayer.process(context);
       });
 
       after(function() {
@@ -115,49 +118,67 @@ describe('MongoDbLayer - process', function() {
         expect(mockDbCollection[context.data.payload.action].called).to.equal(true);
       });
 
-      it('should resolve with response from query', function() {
-        return expect(processPromise).to.equal(mockQueryResponse);
+      it('should emit done event with response', function() {
+        return expect(context.emit.calledWith('done', mongoDbLayer.cementHelper.brickName, mockQueryResponse)).to.equal(true);
       });
     });
 
     context('when retrieving collection fails', function() {
       const job = _.cloneDeep(dbqueryjob);
-      const context = {data: job};
+      const context = new Context(DEFAULTCEMENTHELPER, job);
       const mockError = new Error('mock collection error');
-      before(function() {
+      before(function(done) {
         // stub db.collection() method
         sinon.stub(mockDbConnection, 'collection').withArgs(context.data.payload.collection).yields(mockError, null);
+
+        // spy context emit() method
+        sinon.spy(context, 'emit');
+        context.on('error', function() {
+          done();
+        });
+
+        // calls MongoDbLayer process() method
+        mongoDbLayer.process(context);
       });
 
       after(function() {
         mockDbConnection.collection.restore();
       });
 
-      it('should reject', function() {
-        return expect(mongoDbLayer.process(context)).to.eventually.be.rejectedWith(mockError);
+      it('should emit error event with error', function() {
+        return expect(context.emit.calledWith('error', mongoDbLayer.cementHelper.brickName, mockError)).to.equal(true);
       });
     });
 
     context('when query fails', function() {
       const job = _.cloneDeep(dbqueryjob);
-      const context = {data: job};
+      const context = new Context(DEFAULTCEMENTHELPER, job);
       let mockDbCollection;
       const mockError = new Error('mock query error');
-      before(function() {
+      before(function(done) {
         // mock a db collection object for context.payload.collection
         mockDbCollection = {};
         mockDbCollection[context.data.payload.action] = sinon.stub().yields(mockError, null);
 
         // stub db.collection() method
         sinon.stub(mockDbConnection, 'collection').withArgs(context.data.payload.collection).yields(null, mockDbCollection);
+
+        // spy context emit() method
+        sinon.spy(context, 'emit');
+        context.on('error', function() {
+          done();
+        });
+
+        // calls MongoDbLayer process() method
+        mongoDbLayer.process(context);
       });
 
       after(function() {
         mockDbConnection.collection.restore();
       });
 
-      it('should reject', function() {
-        return expect(mongoDbLayer.process(context)).to.eventually.be.rejectedWith(mockError);
+      it('should emit error event with error', function() {
+        return expect(context.emit.calledWith('error', mongoDbLayer.cementHelper.brickName, mockError)).to.equal(true);
       });
     });
   });
@@ -180,21 +201,23 @@ describe('MongoDbLayer - process', function() {
           { region: 'emea1' },
           { limit: 1},
         ];
-        const context = {data: job};
-        let processPromise;
+        const context = new Context(DEFAULTCEMENTHELPER, job);
         before(function(done) {
-          // calls MongoDbLayer process() method
-          mongoDbLayer.process(context).then(function(res) {
-            processPromise = res;
+          // spy context emit() method
+          sinon.spy(context, 'emit');
+          context.on('done', function() {
             done();
-          }).catch(done);
+          });
+
+          // calls MongoDbLayer process() method
+          mongoDbLayer.process(context);
         });
 
         after(function() {
         });
 
-        it('should resolve with an Array', function() {
-          return expect(processPromise).to.be.an('Array');
+        it('should emit done event with an Array', function() {
+          return expect(context.emit.calledWith('done', mongoDbLayer.cementHelper.brickName, sinon.match.array)).to.equal(true);
         });
       });
 
@@ -204,21 +227,23 @@ describe('MongoDbLayer - process', function() {
         job.payload.args = [
           { name: 'cta-openstack-emea1' },
         ];
-        const context = {data: job};
-        let processPromise;
+        const context = new Context(DEFAULTCEMENTHELPER, job);
         before(function(done) {
-          // calls MongoDbLayer process() method
-          mongoDbLayer.process(context).then(function(res) {
-            processPromise = res;
+          // spy context emit() method
+          sinon.spy(context, 'emit');
+          context.on('done', function() {
             done();
-          }).catch(done);
+          });
+
+          // calls MongoDbLayer process() method
+          mongoDbLayer.process(context);
         });
 
         after(function() {
         });
 
-        it('should resolve with an Array', function() {
-          return expect(processPromise).to.exist;
+        it('should emit done event with a response', function() {
+          return expect(context.emit.calledWith('done', mongoDbLayer.cementHelper.brickName, sinon.match.object)).to.equal(true);
         });
       });
     });

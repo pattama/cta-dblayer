@@ -31,12 +31,13 @@ const DEFAULTCONFIG = {
     },
   },
 };
+const DEFAULTLOGGER = logger();
 const DEFAULTCEMENTHELPER = {
   constructor: {
     name: 'CementHelper',
   },
+  logger: DEFAULTLOGGER,
 };
-const DEFAULTLOGGER = logger();
 
 describe('MongoDbLayer - constructor', function() {
   context('when everything ok', function() {
@@ -46,7 +47,7 @@ describe('MongoDbLayer - constructor', function() {
       url = 'mongodb://';
       url += DEFAULTCONFIG.servers.map((elem) => `${elem.host}:${elem.port}`).join(',');
       url += `/${DEFAULTCONFIG.databasename}`;
-      mongoDbLayer = new MongoDbLayer(DEFAULTCONFIG, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+      mongoDbLayer = new MongoDbLayer(DEFAULTCEMENTHELPER, DEFAULTCONFIG);
     });
 
     it('should return new MongoDbLayer object', function(done) {
@@ -64,7 +65,7 @@ describe('MongoDbLayer - constructor', function() {
   context(`when missing/incorrect 'configuration' object property`, function() {
     it('should throw an error', function() {
       return expect(function() {
-        return new MongoDbLayer(null, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+        return new MongoDbLayer(DEFAULTCEMENTHELPER, null);
       }).to.throw(Error, `missing/incorrect 'configuration' object property`);
     });
   });
@@ -74,7 +75,7 @@ describe('MongoDbLayer - constructor', function() {
     configuration.url = {};
     it('should throw an error', function() {
       return expect(function() {
-        return new MongoDbLayer(configuration, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+        return new MongoDbLayer(DEFAULTCEMENTHELPER, configuration);
       }).to.throw(Error, `incorrect 'url' string property in configuration`);
     });
   });
@@ -84,7 +85,7 @@ describe('MongoDbLayer - constructor', function() {
     configuration.databasename = {};
     it('should throw an error', function() {
       return expect(function() {
-        return new MongoDbLayer(configuration, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+        return new MongoDbLayer(DEFAULTCEMENTHELPER, configuration);
       }).to.throw(Error, `missing/incorrect 'databasename' string property in configuration`);
     });
   });
@@ -94,7 +95,7 @@ describe('MongoDbLayer - constructor', function() {
     configuration.servers = {};
     it('should throw an error', function() {
       return expect(function() {
-        return new MongoDbLayer(configuration, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+        return new MongoDbLayer(DEFAULTCEMENTHELPER, configuration);
       }).to.throw(Error, `missing/incorrect 'servers' array property in configuration`);
     });
   });
@@ -104,7 +105,7 @@ describe('MongoDbLayer - constructor', function() {
     configuration.servers[0].host = {};
     it('should throw an error', function() {
       return expect(function() {
-        return new MongoDbLayer(configuration, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+        return new MongoDbLayer(DEFAULTCEMENTHELPER, configuration);
       }).to.throw(Error, `missing/incorrect 'host' string property in configuration.servers[0]`);
     });
   });
@@ -114,7 +115,7 @@ describe('MongoDbLayer - constructor', function() {
     configuration.servers[1].port = {};
     it('should throw an error', function() {
       return expect(function() {
-        return new MongoDbLayer(configuration, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+        return new MongoDbLayer(DEFAULTCEMENTHELPER, configuration);
       }).to.throw(Error, `missing/incorrect 'port' number property in configuration.servers[1]`);
     });
   });
@@ -124,7 +125,7 @@ describe('MongoDbLayer - constructor', function() {
     configuration.options = null;
     it('should throw an error', function() {
       return expect(function() {
-        return new MongoDbLayer(configuration, DEFAULTCEMENTHELPER, DEFAULTLOGGER);
+        return new MongoDbLayer(DEFAULTCEMENTHELPER, configuration);
       }).to.throw(Error, `incorrect 'options' object property in configuration`);
     });
   });
@@ -132,7 +133,7 @@ describe('MongoDbLayer - constructor', function() {
   context(`when missing/incorrect 'cementHelper' CementHelper argument`, function() {
     it('should throw an error', function() {
       return expect(function() {
-        return new MongoDbLayer(DEFAULTCONFIG, {}, DEFAULTLOGGER);
+        return new MongoDbLayer({}, DEFAULTCONFIG);
       }).to.throw(Error, `missing/incorrect 'cementHelper' CementHelper argument`);
     });
   });

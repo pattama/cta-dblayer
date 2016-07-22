@@ -86,7 +86,7 @@ Making operations to a Database is done by the DbLayer by sending a Job with a s
 ## Examples of Job
 ### MongoDb
 #### [find()](http://mongodb.github.io/node-mongodb-native/2.2/api/Collection.html#find)
-Find 10 documents in the collection *user* where *name* is "John"
+Find 10 documents in the collection **user** where *name* is "John"
 ```js
 const job = {
   nature: {
@@ -99,15 +99,45 @@ const job = {
     args: [
       { name: 'John' },
       { limit: 10 },
-      {}
     ],
   },
 };
 ```
 #### [aggregate()](http://mongodb.github.io/node-mongodb-native/2.2/api/Collection.html#aggregate)
+Group all **user** *name* by *country* and project the resulting docs as **result**.
+
+**user**: `{ name:String, country:String }`
+
+**result**: `{ country:String, users:Array<user.name> }`
 
 ```js
 const job = {
-  
+  nature: {
+    type: 'database',
+    quality: 'query',
+  },
+  payload: {
+    collection: 'user',
+    action: 'aggregate',
+    args: [
+      [
+        {
+          $group: {
+            _id: '$country',
+            users: {
+              $addToSet: '$name',
+            },
+          },
+        },
+        {
+          $project: {
+            country: '$_id',
+            users: 1,
+            _id: 0,
+          },
+        },
+      ],
+    ],
+  },
 };
 ```

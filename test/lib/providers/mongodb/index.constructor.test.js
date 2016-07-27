@@ -20,6 +20,7 @@ const DEFAULTCONFIG = {
       port: 27018,
     },
   ],
+  collectionOptions: {},
   options: {
     db: {
       'w': 'majority',
@@ -127,6 +128,16 @@ describe('MongoDbLayer - constructor', function() {
       return expect(function() {
         return new MongoDbLayer(DEFAULTCEMENTHELPER, configuration);
       }).to.throw(Error, `incorrect 'options' object property in configuration`);
+    });
+  });
+
+  context(`when incorrect 'collectionOptions' object property in configuration`, function() {
+    const configuration = _.cloneDeep(DEFAULTCONFIG);
+    configuration.collectionOptions = null;
+    it('should throw an error', function() {
+      return expect(function() {
+        return new MongoDbLayer(DEFAULTCEMENTHELPER, configuration);
+      }).to.throw(Error, `incorrect 'collectionOptions' object property in configuration`);
     });
   });
 

@@ -26,8 +26,7 @@ DbLayer class
 
 * [DbLayer](#DbLayer)
     * [new DbLayer(cementHelper, config)](#new_DbLayer_new)
-    * [.validate](#DbLayer+validate) ⇒ <code>Promise</code>
-    * [.process](#DbLayer+process)
+    * [.validate(context)](#DbLayer+validate) ⇒ <code>Promise</code>
 
 <a name="new_DbLayer_new"></a>
 
@@ -44,21 +43,10 @@ Create a new DbLayer instance
 
 <a name="DbLayer+validate"></a>
 
-### dbLayer.validate ⇒ <code>Promise</code>
+### dbLayer.validate(context) ⇒ <code>Promise</code>
 Validates Context properties
 
-**Kind**: instance property of <code>[DbLayer](#DbLayer)</code>  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| context | <code>Context</code> | a Context |
-
-<a name="DbLayer+process"></a>
-
-### dbLayer.process
-Process the context
-
-**Kind**: instance property of <code>[DbLayer](#DbLayer)</code>  
+**Kind**: instance method of <code>[DbLayer](#DbLayer)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -74,31 +62,57 @@ MongoDbLayer class
 
 | Name | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | options object to configure MongoDb driver |
+| configuration | <code>Object</code> | configuration object for the MongoDb connection |
 | cementHelper | <code>CementHelper</code> | cementHelper instance |
 | logger | <code>Logger</code> | logger instance |
 | db | <code>mongodb.Db</code> | a MongoDB Database instance (connection) |
 
 
 * [MongoDbLayer](#MongoDbLayer)
-    * [new MongoDbLayer(configuration, cementHelper, logger)](#new_MongoDbLayer_new)
-    * [.MongoDbServer](#MongoDbLayer.MongoDbServer) : <code>Object</code>
+    * [new MongoDbLayer(cementHelper, configuration)](#new_MongoDbLayer_new)
+    * _instance_
+        * [.validate(context)](#MongoDbLayer+validate) ⇒ <code>Promise</code>
+        * [.process(context)](#MongoDbLayer+process)
+    * _static_
+        * [.MongoDbServer](#MongoDbLayer.MongoDbServer) : <code>Object</code>
 
 <a name="new_MongoDbLayer_new"></a>
 
-### new MongoDbLayer(configuration, cementHelper, logger)
+### new MongoDbLayer(cementHelper, configuration)
 Create a new MongoDbLayer instance
 
 
 | Param | Type | Description |
 | --- | --- | --- |
+| cementHelper | <code>CementHelper</code> | cementHelper instance |
 | configuration | <code>Object</code> | configuration object for the MongoDb connection |
 | [configuration.url] | <code>String</code> | Url connection to the Database. If provided, will discard servers and databasename properties |
 | configuration.databasename | <code>String</code> | Name of the MongoDb database |
 | configuration.servers | <code>Array.&lt;MongoDbServer&gt;</code> | Array of MongoDb servers |
-| configuration.options | <code>Object</code> | hash of options for MongoDb. See https://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html#mongoclient-connect-options |
-| cementHelper | <code>CementHelper</code> | cementHelper instance |
-| logger | <code>Logger</code> | logger instance |
+| configuration.options | <code>Object</code> | hash of options for creating a new MongoDb connection. See https://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html#mongoclient-connect-options |
+| configuration.collectionOptions | <code>Object</code> | hash of options for the db.collection() method. See http://mongodb.github.io/node-mongodb-native/2.2/api/Db.html#collection |
+
+<a name="MongoDbLayer+validate"></a>
+
+### mongoDbLayer.validate(context) ⇒ <code>Promise</code>
+Validates Job properties specific to MongoDbLayer
+
+**Kind**: instance method of <code>[MongoDbLayer](#MongoDbLayer)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| context | <code>Context</code> | a Context |
+
+<a name="MongoDbLayer+process"></a>
+
+### mongoDbLayer.process(context)
+Process the context, emit events, create new context and define listeners
+
+**Kind**: instance method of <code>[MongoDbLayer](#MongoDbLayer)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| context | <code>Context</code> | a Context |
 
 <a name="MongoDbLayer.MongoDbServer"></a>
 

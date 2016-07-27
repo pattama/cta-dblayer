@@ -17,8 +17,38 @@ const config = {
         'properties': {
           'provider': 'mongodb',
           'configuration': {
+            'url': 'mongodb://localhost:27017/cta',
+          }
+        },
+        'logger': {
+          'properties': {
+            'level': 'info',
+          },
+        },
+        'publish': [],
+        'subscribe':[],
+    },
+  ],
+}
+```
+### Connect to a single server using options hash
+```js
+const config = {
+  'bricks': [
+    {
+      'name': 'mongodblayer',
+        'module': 'cta-dblayer',
+        'properties': {
+          'provider': 'mongodb',
+          'configuration': {
             'databasename': 'cta',
-            'url': 'mongodb://localhost:27017',
+            'servers': [
+              {
+                'host': 'localhost',
+                'port': 27017,
+              },
+            ],
+            'options': {},
           }
         },
         'logger': {
@@ -33,6 +63,7 @@ const config = {
 }
 ```
 ### Connect to a ReplicaSet using options hash
+Also pass custom `collectionOptions` as `options` argument to the db.collection() method
 ```js
 const config = {
   'bricks': [
@@ -67,6 +98,9 @@ const config = {
                 'poolSize': 5,
               },
             },
+            'collectionOptions': {
+              'strict': false,
+            }
           }
         },
         'logger': {

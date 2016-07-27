@@ -16,6 +16,9 @@ const config = {
       port: 27017,
     },
   ],
+  // collectionOptions: {
+  //   strict: true,
+  // },
   options: {
     db: {
       'w': 'majority',

@@ -107,9 +107,7 @@ describe('MongoDbLayer - process', function() {
       });
 
       it('should retrieve collection', function() {
-        const options = {
-          strict: true,
-        };
+        const options = DEFAULTCONFIG.collectionOptions;
         expect(stubDbCollection.calledWith(context.data.payload.collection, options)).to.equal(true);
       });
 

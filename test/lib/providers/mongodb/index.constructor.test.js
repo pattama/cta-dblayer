@@ -37,7 +37,9 @@ const DEFAULTCEMENTHELPER = {
   constructor: {
     name: 'CementHelper',
   },
-  logger: DEFAULTLOGGER,
+  dependencies: {
+    logger: DEFAULTLOGGER,
+  },
 };
 
 describe('MongoDbLayer - constructor', function() {

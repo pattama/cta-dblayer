@@ -19,7 +19,9 @@ const DEFAULTCEMENTHELPER = {
     name: 'CementHelper',
   },
   brickName: 'mongodblayer',
-  logger: DEFAULTLOGGER,
+  dependencies: {
+    logger: DEFAULTLOGGER,
+  },
 };
 const dbqueryjob = {
   nature: {
@@ -42,6 +44,7 @@ describe('MongoDbLayer - process', function() {
     url = 'mongodb://';
     url += DEFAULTCONFIG.servers.map((elem) => `${elem.host}:${elem.port}`).join(',');
     url += `/${DEFAULTCONFIG.databasename}`;
+    let mongodbStubModule;
 
     before(function(done) {
       // creates a mocked db connection using native driver (e.g. mongodb module)
@@ -54,12 +57,13 @@ describe('MongoDbLayer - process', function() {
         stubMongoClientConnect = sinon.stub().yields(null, mockDbConnection);
 
         // subvert the native driver with the mocked method
-        requireSubvert.subvert('mongodb', {
+        mongodbStubModule = {
           'MongoClient': {
             'connect': stubMongoClientConnect,
           },
           'Cursor': mongodb.Cursor,
-        });
+        };
+        requireSubvert.subvert('mongodb', mongodbStubModule);
 
         // reloads the native driver used in MongoDbLayer class by the subverted one
         MongoDbLayer = requireSubvert.require('../../../../lib/providers/mongodb');
@@ -177,6 +181,43 @@ describe('MongoDbLayer - process', function() {
 
       it('should emit error event with error', function() {
         return expect(context.emit.calledWith('error', mongoDbLayer.cementHelper.brickName, mockError)).to.equal(true);
+      });
+    });
+
+    context('when response is a Cursor but cannot be converted to Array', function() {
+      const job = _.cloneDeep(dbqueryjob);
+      const context = new Context(DEFAULTCEMENTHELPER, job);
+      let mockDbCollection;
+      let mockQueryResponseCursor;
+      const mockQueryResponseCursorError = new Error('mock error');
+      before(function(done) {
+        mockQueryResponseCursor = sinon.createStubInstance(mongodbStubModule.Cursor);
+        mockQueryResponseCursor.toArray.restore();
+        sinon.stub(mockQueryResponseCursor, 'toArray').rejects(mockQueryResponseCursorError);
+
+        // mock a db collection object for context.payload.collection
+        mockDbCollection = {};
+        mockDbCollection[context.data.payload.action] = sinon.stub().yields(null, mockQueryResponseCursor);
+
+        // stub db.collection() method
+        sinon.stub(mockDbConnection, 'collection').withArgs(context.data.payload.collection).yields(null, mockDbCollection);
+
+        // spy context emit() method
+        sinon.spy(context, 'emit');
+        context.on('error', function() {
+          done();
+        });
+
+        // calls MongoDbLayer process() method
+        mongoDbLayer.process(context);
+      });
+
+      after(function() {
+        mockDbConnection.collection.restore();
+      });
+
+      it('should emit error event', function() {
+        return expect(context.emit.calledWith('error', mongoDbLayer.cementHelper.brickName, mockQueryResponseCursorError)).to.equal(true);
       });
     });
   });

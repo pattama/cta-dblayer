@@ -17,7 +17,9 @@ const DEFAULTCEMENTHELPER = {
     name: 'CementHelper',
   },
   brickName: 'mongodblayer',
-  logger: DEFAULTLOGGER,
+  dependencies: {
+    logger: DEFAULTLOGGER,
+  },
 };
 
 describe('MongoDbLayer - init', function() {
@@ -29,7 +31,7 @@ describe('MongoDbLayer - init', function() {
     let url;
     url = 'mongodb://';
     url += DEFAULTCONFIG.servers.map((elem) => `${elem.host}:${elem.port}`).join(',');
-    url += `/${DEFAULTCONFIG.databasename}`;
+    url += `/${DEFAULTCONFIG.databaseName}`;
     before(function(done) {
       // creates a mocked db connection using native driver (e.g. mongodb module)
       mongodb.MongoClient.connect(url, DEFAULTCONFIG.options, function(err, db) {

@@ -1,7 +1,7 @@
 'use strict';
 
 const config = {
-  databasename: 'etap',
+  databaseName: 'etap',
   servers: [
     {
       host: 'dtci-ctawbmd-01.emea1.cis.trcloud',
@@ -24,10 +24,10 @@ const config = {
       'w': 'majority',
       'readPreference': 'primaryPreferred',
     },
-    replSet: {
-      'replicaSet': 'etap',
-      'poolSize': 100,
-    },
+    // replSet: {
+    //   'replicaSet': 'etap',
+    //   'poolSize': 100,
+    // },
   },
 };
 

@@ -43,7 +43,7 @@ describe('MongoDbLayer - process', function() {
     let url;
     url = 'mongodb://';
     url += DEFAULTCONFIG.servers.map((elem) => `${elem.host}:${elem.port}`).join(',');
-    url += `/${DEFAULTCONFIG.databasename}`;
+    url += `/${DEFAULTCONFIG.databaseName}`;
     let mongodbStubModule;
 
     before(function(done) {

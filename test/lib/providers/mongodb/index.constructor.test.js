@@ -9,7 +9,7 @@ const _ = require('lodash');
 const MongoDbLayer = require('../../../../lib/providers/mongodb');
 const logger = require('cta-logger');
 const DEFAULTCONFIG = {
-  databasename: 'cta',
+  databaseName: 'cta',
   servers: [
     {
       host: 'localhost',
@@ -49,7 +49,7 @@ describe('MongoDbLayer - constructor', function() {
     before(function() {
       url = 'mongodb://';
       url += DEFAULTCONFIG.servers.map((elem) => `${elem.host}:${elem.port}`).join(',');
-      url += `/${DEFAULTCONFIG.databasename}`;
+      url += `/${DEFAULTCONFIG.databaseName}`;
       mongoDbLayer = new MongoDbLayer(DEFAULTCEMENTHELPER, DEFAULTCONFIG);
     });
 
@@ -83,13 +83,13 @@ describe('MongoDbLayer - constructor', function() {
     });
   });
 
-  context(`when missing/incorrect 'databasename' string property in configuration`, function() {
+  context(`when missing/incorrect 'databaseName' string property in configuration`, function() {
     const configuration = _.cloneDeep(DEFAULTCONFIG);
-    configuration.databasename = {};
+    configuration.databaseName = {};
     it('should throw an error', function() {
       return expect(function() {
         return new MongoDbLayer(DEFAULTCEMENTHELPER, configuration);
-      }).to.throw(Error, `missing/incorrect 'databasename' string property in configuration`);
+      }).to.throw(Error, `missing/incorrect 'databaseName' string property in configuration`);
     });
   });
 

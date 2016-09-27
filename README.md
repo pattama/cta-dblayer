@@ -41,7 +41,7 @@ const config = {
         'properties': {
           'provider': 'mongodb',
           'configuration': {
-            'databasename': 'cta',
+            'databaseName': 'cta',
             'servers': [
               {
                 'host': 'localhost',
@@ -73,7 +73,7 @@ const config = {
         'properties': {
           'provider': 'mongodb',
           'configuration': {
-            'databasename': 'cta',
+            'databaseName': 'cta',
             'servers': [
               {
                 'host': 'localhost',

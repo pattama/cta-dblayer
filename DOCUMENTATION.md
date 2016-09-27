@@ -86,8 +86,8 @@ Create a new MongoDbLayer instance
 | --- | --- | --- |
 | cementHelper | <code>CementHelper</code> | cementHelper instance |
 | configuration | <code>Object</code> | configuration object for the MongoDb connection |
-| [configuration.url] | <code>String</code> | Url connection to the Database. If provided, will discard servers and databasename properties |
-| configuration.databasename | <code>String</code> | Name of the MongoDb database |
+| [configuration.url] | <code>String</code> | Url connection to the Database. If provided, will discard servers and databaseName properties |
+| configuration.databaseName | <code>String</code> | Name of the MongoDb database |
 | configuration.servers | <code>Array.&lt;MongoDbServer&gt;</code> | Array of MongoDb servers |
 | configuration.options | <code>Object</code> | hash of options for creating a new MongoDb connection. See https://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html#mongoclient-connect-options |
 | configuration.collectionOptions | <code>Object</code> | hash of options for the db.collection() method. See http://mongodb.github.io/node-mongodb-native/2.2/api/Db.html#collection |

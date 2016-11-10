@@ -37,14 +37,14 @@ class Writer extends Brick {
           args: [docs],
         }
       })
-      .on('error', function onContextError(who, error) {
-        reject();
-      })
-      .on('done', function onContextDone(who, result) {
-        that.logger.info(`Created`, result);
-        resolve();
-      })
-      .publish();
+        .on('error', function onContextError(who, error) {
+          reject();
+        })
+        .on('done', function onContextDone(who, result) {
+          that.logger.info(`Created`, result);
+          resolve();
+        })
+        .publish();
     });
   }
 
@@ -72,14 +72,14 @@ class Writer extends Brick {
           ],
         }
       })
-      .on('error', function onContextError(who, error) {
-        reject();
-      })
-      .on('done', function onContextDone(who, result) {
-        this.logger.info(`Found ${result.length} document(s):`, result);
-        resolve();
-      })
-      .publish();
+        .on('error', function onContextError(who, error) {
+          reject();
+        })
+        .on('done', function onContextDone(who, result) {
+          this.logger.info(`Found ${result.length} document(s):`, result);
+          resolve();
+        })
+        .publish();
     });
   }
 

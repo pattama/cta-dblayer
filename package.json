@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "cta-brick": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick",
+    "cta-logger": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-logger",
     "bson": "^0.4.23",
     "co": "~4.0.0",
     "es6-promisify": "^3.0.0",
@@ -32,6 +33,7 @@
     "test": "test"
   },
   "devDependencies": {
+    "cta-flowcontrol": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-flowcontrol",
     "eslint": "^3.2.2",
     "eslint-config-cta": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/eslint-config-cta.git",
     "bson": "^0.4.23",

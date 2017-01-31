@@ -75,7 +75,7 @@ describe('MongoDbLayer - init', function() {
       return expect(mongoDbLayer).to.have.property('db', mockDbConnection);
     });
 
-    it(`should resolve with String 'ok'`, function() {
+    it('should resolve with String \'ok\'', function() {
       expect(initPromise).to.equal('ok');
     });
   });

@@ -35,27 +35,27 @@ describe('DbLayer - constructor', function() {
     logger: DEFAULTLOGGER,
   };
 
-  context(`when missing/incorrect 'provider' string property in config.properties`, function() {
+  context('when missing/incorrect \'provider\' string property in config.properties', function() {
     const config = _.cloneDeep(DEFAULTS);
     delete config.properties.provider;
     it('should throw an error', function() {
       return expect(function() {
         return new DbLayer(mockCementHelper, config);
-      }).to.throw(Error, `missing/incorrect 'provider' string property in config.properties`);
+      }).to.throw(Error, 'missing/incorrect \'provider\' string property in config.properties');
     });
   });
 
-  context(`when missing/incorrect 'configuration' object property in config.properties`, function() {
+  context('when missing/incorrect \'configuration\' object property in config.properties', function() {
     const config = _.cloneDeep(DEFAULTS);
     delete config.properties.configuration;
     it('should throw an error', function() {
       return expect(function() {
         return new DbLayer(mockCementHelper, config);
-      }).to.throw(Error, `missing/incorrect 'configuration' object property in config.properties`);
+      }).to.throw(Error, 'missing/incorrect \'configuration\' object property in config.properties');
     });
   });
 
-  context(`when provider is not supported (e.g. nodejs require() fails)`, function() {
+  context('when provider is not supported (e.g. nodejs require() fails)', function() {
     const config = _.cloneDeep(DEFAULTS);
     config.properties.provider = 'some-not-supported-provider';
 
@@ -70,7 +70,7 @@ describe('DbLayer - constructor', function() {
     });
   });
 
-  context(`when provider instantiation fails`, function() {
+  context('when provider instantiation fails', function() {
     const config = _.cloneDeep(DEFAULTS);
     config.properties.provider = 'crashingprovider';
 

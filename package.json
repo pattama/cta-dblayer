@@ -1,6 +1,6 @@
 {
   "name": "cta-dblayer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Database layer for Compass Test Automation",
   "author": "CTA Team <cta@thomsonreuters.com>",
   "contributors": [
@@ -14,8 +14,9 @@
     "node": "6.9.4"
   },
   "dependencies": {
-    "cta-brick": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick",
-    "cta-logger": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-logger",
+    "cta-brick": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-brick#1.0.0",
+    "cta-logger": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-logger#1.0.0",
+    "cta-flowcontrol": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-flowcontrol#1.0.0",
     "bson": "^0.4.23",
     "co": "~4.0.0",
     "es6-promisify": "^3.0.0",
@@ -33,7 +34,6 @@
     "test": "test"
   },
   "devDependencies": {
-    "cta-flowcontrol": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/cta-flowcontrol",
     "eslint": "^3.2.2",
     "eslint-config-cta": "git+ssh://git@git.sami.int.thomsonreuters.com:compass/eslint-config-cta.git",
     "bson": "^0.4.23",

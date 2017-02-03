@@ -1,6 +1,6 @@
 {
   "name": "cta-dblayer",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Database layer for Compass Test Automation",
   "author": "CTA Team <cta@thomsonreuters.com>",
   "contributors": [

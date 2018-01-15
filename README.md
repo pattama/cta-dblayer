@@ -1,11 +1,15 @@
-Database layer for Compass Test Automation
+# cta-dblayer
+
+**Database Layer**  for Compass Test Automation, implementing CTA-OSS Framework
+
 ===
+
 # Table of Contents
 1. [Initialization](#initialization)
 2. [Usage](#usage)
 
 # Initialization
-This chapter describes the configuration for a DbLayer brick.
+This chapter describes the configuration for a DBLayer brick.
 ## MongoDb
 ### Connect to a single server using url
 ```js

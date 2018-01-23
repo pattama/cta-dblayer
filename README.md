@@ -1,8 +1,11 @@
 # cta-dblayer
+[![Build Status](https://travis-ci.org/thomsonreuters/cta-dblayer.svg?branch=master)](https://travis-ci.org/thomsonreuters/cta-dblayer)
+[![Coverage Status](https://coveralls.io/repos/github/thomsonreuters/cta-dblayer/badge.svg?branch=master)](https://coveralls.io/github/thomsonreuters/cta-dblayer?branch=master)
+[![codecov](https://codecov.io/gh/thomsonreuters/cta-dblayer/branch/master/graph/badge.svg)](https://codecov.io/gh/thomsonreuters/cta-dblayer)
+
 
 **Database Layer**  for Compass Test Automation, implementing CTA-OSS Framework
 
-===
 
 # Table of Contents
 1. [Initialization](#initialization)

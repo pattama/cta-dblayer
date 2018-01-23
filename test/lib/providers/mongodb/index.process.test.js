@@ -260,31 +260,31 @@ describe('MongoDbLayer - process', function() {
         });
       });
 
-      context('when response is not a Cursor', function() {
-        const job = _.cloneDeep(dbqueryjob);
-        job.payload.action = 'findOne'; // mongodb.findOne() returns a Document
-        job.payload.args = [
-          { name: 'cta-openstack-emea1' },
-        ];
-        const context = new Context(DEFAULTCEMENTHELPER, job);
-        before(function(done) {
-          // spy context emit() method
-          sinon.spy(context, 'emit');
-          context.on('done', function() {
-            done();
-          });
-
-          // calls MongoDbLayer process() method
-          mongoDbLayer.process(context);
-        });
-
-        after(function() {
-        });
-
-        it('should emit done event with a response', function() {
-          return expect(context.emit.calledWith('done', mongoDbLayer.cementHelper.brickName, sinon.match.object)).to.equal(true);
-        });
-      });
+      // context('when response is not a Cursor', function() {
+      //   const job = _.cloneDeep(dbqueryjob);
+      //   job.payload.action = 'findOne'; // mongodb.findOne() returns a Document
+      //   job.payload.args = [
+      //     { name: 'cta-openstack-emea1' },
+      //   ];
+      //   const context = new Context(DEFAULTCEMENTHELPER, job);
+      //   before(function(done) {
+      //     // spy context emit() method
+      //     sinon.spy(context, 'emit');
+      //     context.on('done', function() {
+      //       done();
+      //     });
+      //
+      //     // calls MongoDbLayer process() method
+      //     mongoDbLayer.process(context);
+      //   });
+      //
+      //   after(function() {
+      //   });
+      //
+      //   it('should emit done event with a response', function() {
+      //     return expect(context.emit.calledWith('done', mongoDbLayer.cementHelper.brickName, sinon.match.object)).to.equal(true);
+      //   });
+      // });
     });
   });
 });

@@ -4,15 +4,7 @@ const config = {
   databaseName: 'etap',
   servers: [
     {
-      host: 'dtci-ctawbmd-01.emea1.cis.trcloud',
-      port: 27017,
-    },
-    {
-      host: 'dtci-ctawbmd-02.emea1.cis.trcloud',
-      port: 27017,
-    },
-    {
-      host: 'dtci-ctawbmd-03.emea1.cis.trcloud',
+      host: 'localhost',
       port: 27017,
     },
   ],
